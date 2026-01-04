@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
+<title>Домашняя панель</title>
+<link rel="stylesheet" href="/static/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<script>
+async function updateData() {
+  const res = await fetch('/data');
+  const d = await res.json();
+  document.getElementById("dayANDmonth").textContent = d.day_number + " " + d.month_name + ", " + d.weekDay;
+  document.getElementById("weather-outside").textContent = d.outdoor_temp + "°C";
+  document.getElementById("humidity-outside").textContent = "Humidity: " + d.humidity_outside + "%";
+  document.getElementById("main-container-weather").style.backgroundImage = `url("/static/${d.theme}")`;
+
+  document.getElementById("dayANDmonth").style.color = d.ntv;
+  document.getElementById("weather-outside").style.color = d.ntv;
+  document.getElementById("humidity-outside").style.color = d.ntv;
+
+
+}
+async function loadEvents() {
+  const res = await fetch('/events');
+  const events = await res.json();
+
+  const container = document.getElementById('events');
+  container.innerHTML = '';
+
+  events.forEach(e => {
+    const item = document.createElement('div');
+    item.className = 'event';
+
+    const icon = document.createElement('span');
+    icon.className = 'icon';
+    icon.textContent = e.icon;
+ 
+    const text = document.createElement('span');
+    text.className = 'text';
+    text.textContent = e.text;
+
+    item.appendChild(icon);
+    item.appendChild(text);
+    container.appendChild(item);
+  });
+}
+
+window.onload = function() {
+  updateData();
+  loadEvents();
+
+  setInterval(updateData, 1000*60);
+  setInterval(loadEvents, 1000*60);
+};
+
+</script>
+</head>
+<body>
+    <div id="main-container-weather" class="main-container-weather row" style="background-image: url(bg-img/sun-and-clouds.png);">
+      <div class="info colmn">
+        <h1 id="dayANDmonth">12 November, Monday</h1>
+        <div class="today-panel column">
+          <div class="today-info column">
+            <h2 class="today-text">Today...</h2>
+            <div id="events" class="column">
+
+            </div>
+          </div>
+          
+
+        </div>
+      </div>
+      <div class="weather-info colmn">
+          <h1 id="weather-outside">+15°C</h1>
+          <h2 id="humidity-outside">Humidity: 28%</h2>
+      </div>
+    </div>
+</body>
+</html>
