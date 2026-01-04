@@ -49,7 +49,6 @@ def get_weather(lat=60.39, lon=25.09):
                 _weather_cache["code"]
             )
 
-        # если кэша нет — дефолт
         return 0, 0, 0
 
 
@@ -183,3 +182,4 @@ def save_db(data):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
+
