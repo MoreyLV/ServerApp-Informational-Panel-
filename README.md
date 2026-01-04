@@ -1,4 +1,4 @@
-# Informational Panle
+# Informational Panel
 
 This application was created specifically for personal use, specifically as a weather dashboard.
 It operates as a web client that receives and processes weather and weather data from the server.
